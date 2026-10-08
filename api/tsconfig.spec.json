@@ -4,7 +4,11 @@
     "outDir": "../dist/out-tsc",
     "module": "commonjs",
     "moduleResolution": "bundler",
-    "types": ["jest", "node"]
+    "types": ["jest", "node"],
+    "rootDir": ".",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "target": "es2021"
   },
   "include": [
     "jest.config.ts",
