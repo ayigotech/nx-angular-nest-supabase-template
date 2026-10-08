@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "declarationMap": true,
+    "importHelpers": true,
+    "isolatedModules": true,
+    "lib": ["es2022", "dom", "dom.iterable"],
+    "module": "preserve",
+    "moduleResolution": "bundler",
+    "noEmitOnError": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "es2022",
+    "customConditions": ["@org/source"],
+    "noUncheckedSideEffectImports": false,
+    "paths": {
+      "@org/types": ["./libs/shared/types/src/index.ts"],
+      "@org/ui": ["./libs/shared/ui/src/index.ts"],
+      "@org/supabase-client": [
+        "./libs/data-access/supabase-client/src/index.ts"
+      ]
+    }
+  }
+}

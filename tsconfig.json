@@ -1,0 +1,29 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compileOnSave": false,
+  "files": [],
+  "references": [
+    {
+      "path": "./libs/data-access/supabase-client"
+    },
+    {
+      "path": "./libs/shared/types"
+    },
+    {
+      "path": "./libs/shared/ui"
+    },
+    {
+      "path": "./client-e2e"
+    },
+    {
+      "path": "./api-e2e"
+    },
+    {
+      "path": "./client"
+    },
+    {
+      "path": "./api"
+    }
+  ],
+  "compilerOptions": {}
+}
