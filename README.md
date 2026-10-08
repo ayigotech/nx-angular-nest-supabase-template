@@ -1,109 +1,217 @@
-# New Nx Repository
+# Nx Angular + NestJS + Supabase Template
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+Production-ready Nx monorepo template for building modern full-stack applications with Angular (PWA), NestJS, and Supabase.
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is ready ✨.
+## Stack
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/docs/technologies/typescript/introduction?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+| Layer | Technology | Version |
+|---|---|---|
+| Monorepo | Nx | 23 |
+| Frontend | Angular | 22 |
+| Frontend Runtime | PWA + Service Worker | 22 |
+| Backend | NestJS | 11 |
+| Database & Auth | Supabase | latest |
+| Package Manager | pnpm | 10 |
+| Testing | Jest (Node) · Vitest (Angular) · Playwright (E2E) |
+| Deployment | Vercel |
 
-🚀 If you haven't connected to Nx Cloud yet, [complete your setup here](https://cloud.nx.app/get-started). Get faster builds with remote caching, distributed task execution, and self-healing CI. [See how your workspace can benefit](#nx-cloud).
-
-## Generate a library
-
-```sh
-npx nx g @nx/js:lib packages/pkg1 --publishable --importPath=@my-org/pkg1
-```
-
-## Run tasks
-
-To build the library use:
-
-```sh
-npx nx run pkg1:build
-```
-
-To run any task with Nx use:
-
-```sh
-npx nx run <project-name>:<target>
-```
-
-These targets are either [inferred automatically](https://nx.dev/docs/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
-
-[More about running tasks in the docs &raquo;](https://nx.dev/docs/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Versioning and releasing
-
-To version and release the library use
+## Project Structure
 
 ```
-npx nx release
+.
+├── api/                          # NestJS backend
+├── api-e2e/                      # Backend E2E tests (Playwright)
+├── client/                       # Angular PWA
+├── client-e2e/                   # Frontend E2E tests (Playwright)
+├── libs/
+│   ├── data-access/
+│   │   └── supabase-client/      # Supabase wrapper (shared)
+│   └── shared/
+│       ├── types/                # Shared TS interfaces
+│       └── ui/                   # Shared Angular components
+├── nx.json                       # Nx workspace config
+├── tsconfig.base.json            # Root TS config + path aliases
+└── pnpm-workspace.yaml           # pnpm workspace definition
 ```
 
-Pass `--dry-run` to see what would happen without actually releasing the library.
+## Getting Started
 
-[Learn more about Nx release &raquo;](https://nx.dev/docs/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+### 1. Clone this template
 
-## Keep TypeScript project references up to date
-
-Nx automatically updates TypeScript [project references](https://www.typescriptlang.org/docs/handbook/project-references.html) in `tsconfig.json` files to ensure they remain accurate based on your project dependencies (`import` or `require` statements). This sync is automatically done when running tasks such as `build` or `typecheck`, which require updated references to function correctly.
-
-To manually trigger the process to sync the project graph dependencies information to the TypeScript project references, run the following command:
-
-```sh
-npx nx sync
+```bash
+git clone https://github.com/ayigotech/nx-angular-nest-supabase-template.git my-new-project
+cd my-new-project
+rm -rf .git
+git init
+git branch -M main
 ```
 
-You can enforce that the TypeScript project references are always in the correct state when running in CI by adding a step to your CI job configuration that runs the following command:
+### 2. Rename the workspace
 
-```sh
-npx nx sync:check
+Edit `package.json` and change:
+
+```json
+"name": "nx-angular-nest-supabase-template"
 ```
 
-[Learn more about nx sync](https://nx.dev/reference/nx-commands#sync)
+to your project name (e.g., `"name": "my-new-project"`).
 
-## Nx Cloud
+### 3. Install dependencies
 
-Nx Cloud ensures a [fast and scalable CI](https://nx.dev/nx-cloud?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) pipeline. It includes features such as:
-
-- [Remote caching](https://nx.dev/docs/features/ci-features/remote-cache?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task distribution across multiple machines](https://nx.dev/docs/features/ci-features/distribute-task-execution?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Automated e2e test splitting](https://nx.dev/docs/features/ci-features/split-e2e-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task flakiness detection and rerunning](https://nx.dev/docs/features/ci-features/flaky-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-### Set up CI (non-Github Actions CI)
-
-**Note:** This is only required if your CI provider is not GitHub Actions.
-
-Use the following command to configure a CI workflow for your workspace:
-
-```sh
-npx nx g ci-workflow
+```bash
+pnpm install
 ```
 
-[Learn more about Nx on CI](https://nx.dev/docs/features/ci-features?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+### 4. Configure environment variables
 
-## Install Nx Console
+Create `.env` files in each app (they are gitignored).
 
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
+**`client/.env`** — frontend, safe to expose to the browser:
 
-[Install Nx Console &raquo;](https://nx.dev/docs/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+```
+NG_APP_SUPABASE_URL=https://your-project.supabase.co
+NG_APP_SUPABASE_ANON_KEY=your-anon-key
+```
 
-## 🔗 Learn More
+**`api/.env`** — backend, never commit:
 
-- [Nx Documentation](https://nx.dev/docs)
-- [Crafting Your Workspace Tutorial](https://nx.dev/docs/getting-started/tutorials/crafting-your-workspace)
-- [Module Boundaries](https://nx.dev/docs/features/enforce-module-boundaries)
-- [Releasing Packages](https://nx.dev/docs/features/manage-releases)
-- [Nx Plugins](https://nx.dev/docs/concepts/nx-plugins)
-- [Nx Cloud](https://nx.dev/nx-cloud)
+```
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+CORS_ORIGIN=http://localhost:4200
+```
 
-## 💬 Community
+### 5. Verify the build
 
-Join the Nx community:
+```bash
+npx nx run-many -t build
+```
 
-- [Discord](https://go.nx.dev/community)
-- [X (Twitter)](https://twitter.com/nxdevtools)
-- [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [YouTube](https://www.youtube.com/@nxdevtools)
-- [Blog](https://nx.dev/blog)
+All projects should build successfully.
+
+## Daily Workflow
+
+### Serve apps
+
+```bash
+# Both apps at once (client on :4200, api on :3000)
+npx nx run-many -t serve --projects=client,api
+
+# Single app
+npx nx serve client
+npx nx serve api
+```
+
+### Build
+
+```bash
+# Only what changed since last commit
+npx nx affected -t build
+
+# Everything
+npx nx run-many -t build
+```
+
+### Test
+
+```bash
+npx nx affected -t test
+npx nx test client
+npx nx test api
+```
+
+### Lint
+
+```bash
+npx nx affected -t lint
+```
+
+### Full verification (before committing)
+
+```bash
+npx nx affected -t lint test build
+```
+
+### Generate new code
+
+```bash
+# New Angular component
+npx nx g @nx/angular:component my-component --project=client
+
+# New Angular library
+npx nx g @nx/angular:lib feature --directory=libs/my-feature/feature
+
+# New NestJS library
+npx nx g @nx/nest:lib feature-api --directory=libs/my-feature/feature-api
+
+# New plain TS library
+npx nx g @nx/js:lib utils --directory=libs/shared/utils
+```
+
+### Visualize the dependency graph
+
+```bash
+npx nx graph
+```
+
+### List all projects
+
+```bash
+npx nx show projects
+```
+
+## Import Aliases
+
+Defined in `tsconfig.base.json`:
+
+```typescript
+import { /* types */ } from '@org/types';
+import { /* components */ } from '@org/ui';
+import { /* supabase client */ } from '@org/supabase-client';
+```
+
+## Deployment (Vercel)
+
+Create **two** Vercel projects from the same repository.
+
+### Project 1 — Frontend
+
+| Setting | Value |
+|---|---|
+| Root Directory | `client` |
+| Install Command | `cd .. && pnpm install` |
+| Build Command | `cd .. && npx nx build client` |
+| Output Directory | `../dist/client/browser` |
+
+### Project 2 — Backend
+
+| Setting | Value |
+|---|---|
+| Root Directory | `api` |
+| Install Command | `cd .. && pnpm install` |
+| Build Command | `cd .. && npx nx build api` |
+| Output Directory | `../dist/api` |
+
+Add environment variables for each project in the Vercel dashboard.
+
+## Testing
+
+| Scope | Runner | Command |
+|---|---|---|
+| Angular app | Vitest | `npx nx test client` |
+| NestJS backend | Jest | `npx nx test api` |
+| Shared TS libs | Jest | `npx nx test types` |
+| E2E (frontend) | Playwright | `npx nx e2e client-e2e` |
+| E2E (backend) | Playwright | `npx nx e2e api-e2e` |
+
+## Conventions
+
+- **TypeScript strict mode** is enabled workspace-wide.
+- **Path aliases** use `@org/*` prefix (rename when you fork).
+- **pnpm only** — do not use npm or yarn inside this workspace.
+- **Never commit `.env` files** — they are gitignored.
+- **Commit format** — `feat:`, `fix:`, `chore:`, `docs:`, `refactor:`.
+
+## License
+
+MIT
